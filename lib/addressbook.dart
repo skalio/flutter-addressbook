@@ -23,9 +23,13 @@ class Addressbook {
 
       Map<dynamic, dynamic> phoneNumbersMap = map["phoneNumbers"];
       Map<String, String> phoneNumbers = Map<String, String>();
-      phoneNumbersMap.forEach((label, number) {
-        phoneNumbers[label] = number;
-      });
+      if (phoneNumbers != null) {
+        phoneNumbersMap.forEach((label, number) {
+          phoneNumbers[label] = number;
+        });
+      } else {
+        phoneNumbers = null;
+      }
 
       String profileImage = map["profileImage"];
 

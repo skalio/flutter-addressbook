@@ -26,6 +26,9 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       contacts = await Addressbook.getContacts();
+      for (var value in contacts) {
+        print(value.givenName);
+      }
     } on PlatformException {
       print("Failed to get contacts");
     }
@@ -37,6 +40,8 @@ class _MyAppState extends State<MyApp> {
 
     setState(() {
       _contacts = contacts;
+      print(_contacts.length);
+      print(_contacts.first);
     });
   }
 
@@ -48,7 +53,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Hello World'),
+          child: Text("hello"),
         ),
       ),
     );
