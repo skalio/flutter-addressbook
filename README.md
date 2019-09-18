@@ -1,14 +1,37 @@
-# addressbook
+# flutter-addressbook-mobile
+A Flutter plugin to access the mobile device's address book.
 
-A new flutter plugin project.
+## Features
+* Automatically ask user for permission
+* Get all contacts or querying for certain contacts
+* [WIP] Android
 
-## Getting Started
+## Requirements
+* iOS 9.0+
+* MacOS 10.11+
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+## Installation
+Add following lines to your `pubspec.yaml
+```
+dependencies:
+  flutter-addressbook-mobile:
+```
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## API
+```dart
+import 'package:addressbook/addressbook.dart';
+
+List<Contact> Addressbook.getContacts() // get all contacts
+List<Contact> Addressbook.getContacts("example") // querying contacts with given querystring which can be the fullname, organizationname or email address
+```
+
+## Permissions
+#### iOS
+On iOS you'll need to add the NSContactsUsageDescription to your Info.plist file in order to access the device's address book. Simply open your Info.plist file and add the following:
+```
+<key>NSContactsUsageDescription</key>
+<string>This app needs access to address book</string>
+```
+
+#### Android
+Coming soon..
