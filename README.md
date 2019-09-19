@@ -22,7 +22,7 @@ dependencies:
 import 'package:addressbook/addressbook.dart';
 
 List<Contact> Addressbook.getContacts() // get all contacts
-List<Contact> Addressbook.getContacts(query: "example", onlywithEmail: true, profileImage: true) // querying contacts with given querystring which can be the fullname, organizationname or email address. If you want to return only contacts with a email address, set onlyWithEmail to true. If you want to return the contacts profil image, set to true. All arguments are optional
+List<Contact> Addressbook.getContacts(query: "example", onlywithEmail: true, profileImage: true) // querying contacts with given querystring which can be the fullname, organizationname or email address. If you want to return only contacts with a email address, set onlyWithEmail to true (default is false). If you want to return the contacts profil image, set to true (default is true). All arguments are optional
  
 
 String contact.givenName
