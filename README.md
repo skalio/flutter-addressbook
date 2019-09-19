@@ -28,9 +28,9 @@ List<Contact> Addressbook.getContacts(query: "example", onlywithEmail: true, pro
 String contact.givenName
 String contact.familyName
 String contact.organization
-Map<String, String> emailAddresses // key of the map is an associated label of the address such as "private" or "job"
-Map<String, String> phoneNumbers // key of the map is an associated label of the number such as "private" or "home"
-String profileImage // base64 encoded image
+Map<String, String> contact.emailAddresses // key of the map is an associated label of the address such as "private" or "job"
+Map<String, String> contact.phoneNumbers // key of the map is an associated label of the number such as "private" or "home"
+String contact.profileImage // base64 encoded image
 ```
 
 ## Permissions
