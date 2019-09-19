@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 class Addressbook {
   static const MethodChannel _channel = const MethodChannel('addressbook');
 
-  static Future<List<Contact>> getContacts([String query]) async {
-    List<dynamic> contacts = await _channel.invokeMethod('getContacts', query);
+  static Future<List<Contact>> getContacts({String query, bool onlyWithEmail, bool profileImage}) async {
+    List<dynamic> contacts = await _channel.invokeMethod('getContacts', {"query": query, "onlyWithEmail": onlyWithEmail, "profileImage": profileImage});
     List<Map<dynamic, dynamic>> castedContacts = contacts.cast();
     List<Contact> mappedContacts = [];
 
@@ -17,13 +17,17 @@ class Addressbook {
 
       Map<dynamic, dynamic> emailAddressesMap = map["emailAddresses"];
       Map<String, String> emailAddresses = Map<String, String>();
-      emailAddressesMap.forEach((label, email) {
-        emailAddresses[label] = email;
-      });
+      if (emailAddressesMap != null) {
+        emailAddressesMap.forEach((label, email) {
+          emailAddresses[label] = email;
+        });
+      } else {
+        emailAddresses = null;
+      }
 
       Map<dynamic, dynamic> phoneNumbersMap = map["phoneNumbers"];
       Map<String, String> phoneNumbers = Map<String, String>();
-      if (phoneNumbers != null) {
+      if (phoneNumbersMap != null) {
         phoneNumbersMap.forEach((label, number) {
           phoneNumbers[label] = number;
         });

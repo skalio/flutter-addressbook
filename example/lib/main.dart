@@ -22,15 +22,11 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    List<Contact> contacts = [];
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      contacts = await Addressbook.getContacts();
+    List<Contact> contacts = await Addressbook.getContacts();
+    if (contacts != null) {
       for (var value in contacts) {
-        print(value.givenName);
+        print((value.givenName != null ? value.givenName : "") + (value.familyName != null ? value.familyName : "") + (value.organization != null ? value.organization : ""));
       }
-    } on PlatformException {
-      print("Failed to get contacts");
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -40,8 +36,6 @@ class _MyAppState extends State<MyApp> {
 
     setState(() {
       _contacts = contacts;
-      print(_contacts.length);
-      print(_contacts.first);
     });
   }
 
@@ -53,7 +47,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text("hello"),
+          child: Text("Hello World!"),
         ),
       ),
     );
