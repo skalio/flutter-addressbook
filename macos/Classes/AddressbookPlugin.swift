@@ -9,7 +9,7 @@ public class AddressbookPlugin: NSObject, FlutterPlugin {
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "addressbook", binaryMessenger: registrar.messenger)
-        let instance = AddressdevPlugin()
+        let instance = AddressbookPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     
