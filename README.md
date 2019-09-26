@@ -14,7 +14,7 @@ A Flutter plugin to access the device's address book.
 Add following lines to your `pubspec.yaml
 ```
 dependencies:
-  flutter-addressbook-mobile:
+  flutter-addressbook:
 ```
 
 ## API
