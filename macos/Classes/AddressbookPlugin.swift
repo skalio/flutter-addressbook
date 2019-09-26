@@ -28,8 +28,6 @@ public class AddressbookPlugin: NSObject, FlutterPlugin {
     fileprivate func getContacts(query: String?, onlyWithEmail: Bool?, profileImage: Bool?, result: @escaping FlutterResult) {
         var contacts: NSArray = []
         
-        print("jumped in")
-        
         if #available(OSX 10.11, *) {
             
             guard (CNContactStore.authorizationStatus(for: .contacts) == .notDetermined || CNContactStore.authorizationStatus(for: .contacts) == .authorized) else {
@@ -100,23 +98,17 @@ public class AddressbookPlugin: NSObject, FlutterPlugin {
                     let organization: String? = contact.organizationName.isEmpty ? nil : contact.organizationName
                     let phoneNumbers: [String?: String]? = prePhoneNumbers.isEmpty ? nil : prePhoneNumbers
                     
-                    print("\(givenName) \(familyName), \(organization), \(emailAddresses), Image within?: \(imageDataBase64 == nil ? false : true)")
-                    
                     let contactMap: NSDictionary = ["givenName": givenName, "familyName": familyName, "organization": organization, "emailAddresses": emailAddresses, "phoneNumbers": phoneNumbers, "profileImage": imageDataBase64]
                     
                     contacts = contacts.adding(contactMap) as NSArray
                 })
             }
-        } else {
-            print("jumped not in")
         }
-        
-        print("COUNT: \(contacts.count)")
         result(contacts)
     }
     
     // filter in fullname, organizationname and email with query
-    @available(iOS 9.0, *)
+    @available(OSX 10.11, *)
     fileprivate func filter(query: String, contact: CNContact) -> Bool {
         let query = query.lowercased()
         let fullname = (contact.givenName + " " + contact.familyName).lowercased()

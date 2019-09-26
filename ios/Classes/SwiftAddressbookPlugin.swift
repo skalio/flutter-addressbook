@@ -29,10 +29,6 @@ public class SwiftAddressbookPlugin: NSObject, FlutterPlugin {
     fileprivate func getContacts(query: String?, onlyWithEmail: Bool?, profileImage: Bool?, result: @escaping FlutterResult) {
         var contacts: NSArray = []
         
-        print(query)
-        print(profileImage)
-        print(profileImage)
-        
         if #available(iOS 9.0, *) {
             
             guard (CNContactStore.authorizationStatus(for: .contacts) == .notDetermined || CNContactStore.authorizationStatus(for: .contacts) == .authorized) else {
@@ -105,16 +101,12 @@ public class SwiftAddressbookPlugin: NSObject, FlutterPlugin {
                     let organization: String? = contact.organizationName.isEmpty ? nil : contact.organizationName
                     let phoneNumbers: [String?: String]? = prePhoneNumbers.isEmpty ? nil : prePhoneNumbers
                     
-                    print("\(givenName) \(familyName), \(organization), \(emailAddresses), Image within?: \(imageDataBase64 == nil ? false : true)")
-                    
                     let contactMap: NSDictionary = ["givenName": givenName, "familyName": familyName, "organization": organization, "emailAddresses": emailAddresses, "phoneNumbers": phoneNumbers, "profileImage": imageDataBase64]
                     
                     contacts = contacts.adding(contactMap) as NSArray
                 })
             }
         }
-        
-        print("COUNT: \(contacts.count)")
         result(contacts)
     }
     
