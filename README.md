@@ -34,8 +34,8 @@ String contact.profileImage // base64 encoded image
 ```
 
 ## Permissions
-#### iOS
-On iOS you'll need to add the NSContactsUsageDescription to your Info.plist file in order to access the device's address book. Simply open your Info.plist file and add the following:
+#### iOS/MacOS
+On iOS or MacOS you'll need to add the NSContactsUsageDescription to your Info.plist file in order to access the device's address book. Simply open your Info.plist file and add the following:
 ```
 <key>NSContactsUsageDescription</key>
 <string>This app needs access to address book</string>
