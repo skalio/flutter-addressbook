@@ -1,5 +1,5 @@
-# flutter-addressbook-mobile
-A Flutter plugin to access the mobile device's address book.
+# flutter-addressbook
+A Flutter plugin to access the device's address book.
 
 ## Features
 * Automatically ask user for permission
