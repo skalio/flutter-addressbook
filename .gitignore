@@ -3,3 +3,4 @@
 example/pubspec.lock
 macos/.DS_Store
 example/.flutter-plugins-dependencies
+example/ios/Podfile.lock
