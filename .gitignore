@@ -1,2 +1,5 @@
 .idea
 *.packages
+example/pubspec.lock
+macos/.DS_Store
+example/.flutter-plugins-dependencies
