@@ -69,7 +69,13 @@ public class SwiftAddressbookPlugin: NSObject, FlutterPlugin {
                     var emailAddresses = [String?: String]()
                     for email in contact.emailAddresses {
                         if let label = email.label {
-                            let key = CNLabeledValue<NSString>.localizedString(forLabel: label)
+                            let type = CNLabeledValue<NSString>.localizedString(forLabel: label)
+                            var key = type
+                            var counter = 0
+                            while (emailAddresses[key] != nil) {
+                                key = type + "_" + String(counter)
+                                counter += 1
+                            }
                             emailAddresses[key] = String(email.value)
                         } else {
                             emailAddresses[nil] = String(email.value)
@@ -79,7 +85,13 @@ public class SwiftAddressbookPlugin: NSObject, FlutterPlugin {
                     var prePhoneNumbers = [String?: String]()
                     for number in contact.phoneNumbers {
                         if let label = number.label {
-                            let key = CNLabeledValue<NSString>.localizedString(forLabel: label)
+                            let type = CNLabeledValue<NSString>.localizedString(forLabel: label)
+                            var key = type
+                            var counter = 0
+                            while (prePhoneNumbers[key] != nil) {
+                                key = type + "_" + String(counter)
+                                counter += 1
+                            }
                             prePhoneNumbers[key] = number.value.stringValue
                         } else {
                             prePhoneNumbers[nil] = number.value.stringValue

@@ -22,10 +22,16 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    List<Contact> contacts = await Addressbook.getContacts();
+    List<Contact> contacts = await Addressbook.getContacts(onlyWithEmail: true);
     if (contacts != null) {
       for (var value in contacts) {
         print((value.givenName != null ? value.givenName : "") + (value.familyName != null ? value.familyName : "") + (value.organization != null ? value.organization : ""));
+        value.emailAddresses.forEach((key, email) {
+          print(key+": "+email);
+        });
+         value.phoneNumbers.forEach((key, phone) {
+          print(key+": "+phone);
+        });
       }
     }
 
