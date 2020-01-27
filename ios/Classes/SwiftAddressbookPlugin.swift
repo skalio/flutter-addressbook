@@ -68,34 +68,32 @@ public class SwiftAddressbookPlugin: NSObject, FlutterPlugin {
                     
                     var emailAddresses = [String?: String]()
                     for email in contact.emailAddresses {
+                        var type = "";
                         if let label = email.label {
-                            let type = CNLabeledValue<NSString>.localizedString(forLabel: label)
-                            var key = type
-                            var counter = 0
-                            while (emailAddresses[key] != nil) {
-                                key = type + "_" + String(counter)
-                                counter += 1
-                            }
-                            emailAddresses[key] = String(email.value)
-                        } else {
-                            emailAddresses[nil] = String(email.value)
+                            type = CNLabeledValue<NSString>.localizedString(forLabel: label)
                         }
+                        var key = type
+                        var counter = 0
+                        while (emailAddresses[key] != nil) {
+                            key = type + "_" + String(counter)
+                            counter += 1
+                        }
+                        emailAddresses[key] = String(email.value)
                     }
                     
                     var prePhoneNumbers = [String?: String]()
                     for number in contact.phoneNumbers {
+                        var type = "";
                         if let label = number.label {
-                            let type = CNLabeledValue<NSString>.localizedString(forLabel: label)
-                            var key = type
-                            var counter = 0
-                            while (prePhoneNumbers[key] != nil) {
-                                key = type + "_" + String(counter)
-                                counter += 1
-                            }
-                            prePhoneNumbers[key] = number.value.stringValue
-                        } else {
-                            prePhoneNumbers[nil] = number.value.stringValue
+                            type = CNLabeledValue<NSString>.localizedString(forLabel: label)
                         }
+                        var key = type
+                        var counter = 0
+                        while (prePhoneNumbers[key] != nil) {
+                            key = type + "_" + String(counter)
+                            counter += 1
+                        }
+                        prePhoneNumbers[key] = number.value.stringValue
                     }
                         
                     

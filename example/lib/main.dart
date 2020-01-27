@@ -25,13 +25,19 @@ class _MyAppState extends State<MyApp> {
     List<Contact> contacts = await Addressbook.getContacts(onlyWithEmail: true);
     if (contacts != null) {
       for (var value in contacts) {
-        print((value.givenName != null ? value.givenName : "") + (value.familyName != null ? value.familyName : "") + (value.organization != null ? value.organization : ""));
-        value.emailAddresses.forEach((key, email) {
-          print(key+": "+email);
-        });
-         value.phoneNumbers.forEach((key, phone) {
-          print(key+": "+phone);
-        });
+        print((value.givenName != null ? value.givenName : "") + " "+
+          (value.familyName != null ? value.familyName : "") + " " +
+          (value.organization != null ? value.organization : ""));
+        if(value.emailAddresses != null) {
+          value.emailAddresses.forEach((key, email) {
+            print(key+": "+email);
+          });
+        }
+        if (value.phoneNumbers != null) {
+          value.phoneNumbers.forEach((key, phone) {
+            print(key+": "+phone);
+          });
+        }
       }
     }
 
@@ -53,7 +59,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text("Hello World!"),
+          child: Text("Demonstrating addressbook library, check log."),
         ),
       ),
     );
