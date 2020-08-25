@@ -108,7 +108,7 @@ public class AddressbookPlugin: NSObject, FlutterPlugin {
                     let organization: String? = contact.organizationName.isEmpty ? nil : contact.organizationName
                     let phoneNumbers: [String?: String]? = prePhoneNumbers.isEmpty ? nil : prePhoneNumbers
                     
-                    let contactMap: NSDictionary = ["givenName": givenName, "familyName": familyName, "organization": organization, "emailAddresses": emailAddresses, "phoneNumbers": phoneNumbers, "profileImage": imageDataBase64]
+                    let contactMap: NSDictionary = ["givenName": givenName as Any, "familyName": familyName as Any, "organization": organization as Any, "emailAddresses": emailAddresses as Any, "phoneNumbers": phoneNumbers as Any, "profileImage": imageDataBase64 as Any]
                     
                     contacts = contacts.adding(contactMap) as NSArray
                 })
