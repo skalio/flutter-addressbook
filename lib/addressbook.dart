@@ -5,8 +5,16 @@ import 'package:flutter/services.dart';
 class Addressbook {
   static const MethodChannel _channel = const MethodChannel('addressbook');
 
-  static Future<List<Contact>> getContacts({String query, bool onlyWithEmail, bool profileImage}) async {
-    List<dynamic> contacts = await _channel.invokeMethod('getContacts', {"query": query, "onlyWithEmail": onlyWithEmail, "profileImage": profileImage});
+  static Future<List<Contact>> getContacts(
+      {String query, bool onlyWithEmail, bool profileImage}) async {
+    List<dynamic> contacts = await _channel.invokeMethod(
+      'getContacts',
+      {
+        "query": query,
+        "onlyWithEmail": onlyWithEmail,
+        "profileImage": profileImage
+      },
+    );
     List<Map<dynamic, dynamic>> castedContacts = contacts.cast();
     List<Contact> mappedContacts = [];
 
@@ -18,9 +26,11 @@ class Addressbook {
       Map<dynamic, dynamic> emailAddressesMap = map["emailAddresses"];
       Map<String, String> emailAddresses = Map<String, String>();
       if (emailAddressesMap != null) {
-        emailAddressesMap.forEach((label, email) {
-          emailAddresses[label] = email;
-        });
+        emailAddressesMap.forEach(
+          (label, email) {
+            emailAddresses[label] = email;
+          },
+        );
       } else {
         emailAddresses = null;
       }
@@ -28,16 +38,21 @@ class Addressbook {
       Map<dynamic, dynamic> phoneNumbersMap = map["phoneNumbers"];
       Map<String, String> phoneNumbers = Map<String, String>();
       if (phoneNumbersMap != null) {
-        phoneNumbersMap.forEach((label, number) {
-          phoneNumbers[label] = number;
-        });
+        phoneNumbersMap.forEach(
+          (label, number) {
+            phoneNumbers[label] = number;
+          },
+        );
       } else {
         phoneNumbers = null;
       }
 
       String profileImage = map["profileImage"];
 
-      mappedContacts.add(Contact(givenName, familyName, organization, emailAddresses, phoneNumbers, profileImage));
+      mappedContacts.add(
+        Contact(givenName, familyName, organization, emailAddresses,
+            phoneNumbers, profileImage),
+      );
     }
 
     return mappedContacts;
@@ -52,5 +67,6 @@ class Contact {
   final Map<String, String> phoneNumbers;
   final String profileImage;
 
-  Contact(this.givenName, this.familyName, this.organization, this.emailAddresses, this.phoneNumbers, this.profileImage);
+  Contact(this.givenName, this.familyName, this.organization,
+      this.emailAddresses, this.phoneNumbers, this.profileImage);
 }

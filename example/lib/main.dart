@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:addressbook/addressbook.dart';
 
 void main() => runApp(MyApp());
@@ -25,18 +24,24 @@ class _MyAppState extends State<MyApp> {
     List<Contact> contacts = await Addressbook.getContacts(onlyWithEmail: true);
     if (contacts != null) {
       for (var value in contacts) {
-        print((value.givenName != null ? value.givenName : "") + " "+
-          (value.familyName != null ? value.familyName : "") + " " +
-          (value.organization != null ? value.organization : ""));
-        if(value.emailAddresses != null) {
-          value.emailAddresses.forEach((key, email) {
-            print(key+": "+email);
-          });
+        print((value.givenName != null ? value.givenName : "") +
+            " " +
+            (value.familyName != null ? value.familyName : "") +
+            " " +
+            (value.organization != null ? value.organization : ""));
+        if (value.emailAddresses != null) {
+          value.emailAddresses.forEach(
+            (key, email) {
+              print(key + ": " + email);
+            },
+          );
         }
         if (value.phoneNumbers != null) {
-          value.phoneNumbers.forEach((key, phone) {
-            print(key+": "+phone);
-          });
+          value.phoneNumbers.forEach(
+            (key, phone) {
+              print(key + ": " + phone);
+            },
+          );
         }
       }
     }
@@ -46,9 +51,7 @@ class _MyAppState extends State<MyApp> {
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
-    setState(() {
-      _contacts = contacts;
-    });
+    setState(() => _contacts = contacts);
   }
 
   @override
