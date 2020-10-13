@@ -11,16 +11,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Contact> _contacts = [];
+  Future _contactsFuture;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    _contactsFuture = loadContacts();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
+  Future<void> loadContacts() async {
     List<Contact> contacts = await Addressbook.getContacts(onlyWithEmail: true);
     if (contacts != null) {
       for (var value in contacts) {
@@ -45,13 +45,6 @@ class _MyAppState extends State<MyApp> {
         }
       }
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() => _contacts = contacts);
   }
 
   @override
@@ -59,10 +52,35 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text("Addressbook plugin example"),
         ),
         body: Center(
-          child: Text("Demonstrating addressbook library, check log."),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("Demonstrating addressbook library, check log."),
+              IconButton(
+                icon: FutureBuilder(
+                  future: _contactsFuture,
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                      case ConnectionState.active:
+                        return CircularProgressIndicator();
+                      case ConnectionState.done:
+                        return Icon(Icons.cached);
+                    }
+                  },
+                ),
+                onPressed: () => setState(
+                  () {
+                    _contactsFuture = loadContacts();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
