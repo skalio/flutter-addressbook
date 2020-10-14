@@ -7,7 +7,7 @@ class Addressbook {
   static const MethodChannel _channel = const MethodChannel('addressbook');
 
   /// Returns a [Future] that completes with a [List] of all available [Contacts].
-  /// The search space can be reduces by passing a [query] string to which the results must match.
+  /// The search space can be reduced by passing a [query] string to which the results must match.
   /// Setting [onlyWithEmail] will filter out contacts without a single [Contacts#emailAddresses] entry.
   /// Profile image data can be included with the [profileImage] flag.
   static Future<List<Contact>> getContacts({
