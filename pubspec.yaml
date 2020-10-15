@@ -1,11 +1,12 @@
 name: addressbook
 description: Addressbook access for Flutter apps.
-version: 0.0.3
+version: 0.0.4
 author:
 homepage:
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.20.0 <2.0.0"
 
 dependencies:
   flutter:
@@ -18,6 +19,9 @@ dev_dependencies:
 flutter:
   plugin:
     platforms:
+      android:
+        package: com.skalio.addressbook
+        pluginClass: AddressbookPlugin
       ios:
         pluginClass: AddressbookPlugin
       macos:
