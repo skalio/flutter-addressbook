@@ -6,7 +6,7 @@ void main() {
   const MethodChannel channel = MethodChannel('addressbook');
 
   TestWidgetsFlutterBinding.ensureInitialized();
-  /*
+
   setUp(() {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       return '42';
@@ -17,7 +17,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
-    expect(await Addressbook.platformVersion, '42');
+  /*test('getPlatformVersion', () async {
+    expect(await Addressbook.getPlatformVersion(), '42');
   });*/
 }
