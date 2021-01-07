@@ -19,8 +19,8 @@ class Addressbook {
       'getContacts',
       {
         "query": query,
-        "onlyWithEmail": onlyWithEmail,
-        "profileImage": profileImage
+        "onlyWithEmail": onlyWithEmail ?? false,
+        "profileImage": profileImage ?? false
       },
     );
     List<Map<dynamic, dynamic>> castedContacts = contacts.cast();
