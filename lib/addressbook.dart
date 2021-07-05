@@ -11,9 +11,9 @@ class Addressbook {
   /// Setting [onlyWithEmail] will filter out contacts without a single [Contacts#emailAddresses] entry.
   /// Profile image data can be included with the [profileImage] flag.
   static Future<List<Contact>> getContacts({
-    String query,
-    bool onlyWithEmail,
-    bool profileImage,
+    String? query,
+    bool? onlyWithEmail,
+    bool? profileImage,
   }) async {
     List<dynamic> contacts = await _channel.invokeMethod(
       'getContacts',
@@ -27,35 +27,35 @@ class Addressbook {
     List<Contact> mappedContacts = [];
 
     for (var map in castedContacts) {
-      String givenName = map["givenName"];
-      String familyName = map["familyName"];
-      String organization = map["organization"];
+      String? givenName = map["givenName"];
+      String? familyName = map["familyName"];
+      String? organization = map["organization"];
 
-      Map<dynamic, dynamic> emailAddressesMap = map["emailAddresses"];
-      Map<String, String> emailAddresses = Map<String, String>();
+      Map<dynamic, dynamic>? emailAddressesMap = map["emailAddresses"];
+      Map<String, String>? emailAddresses = Map<String, String>();
       if (emailAddressesMap != null) {
         emailAddressesMap.forEach(
           (label, email) {
-            emailAddresses[label] = email;
+            emailAddresses![label] = email;
           },
         );
       } else {
         emailAddresses = null;
       }
 
-      Map<dynamic, dynamic> phoneNumbersMap = map["phoneNumbers"];
-      Map<String, String> phoneNumbers = Map<String, String>();
+      Map<dynamic, dynamic>? phoneNumbersMap = map["phoneNumbers"];
+      Map<String, String>? phoneNumbers = Map<String, String>();
       if (phoneNumbersMap != null) {
         phoneNumbersMap.forEach(
           (label, number) {
-            phoneNumbers[label] = number;
+            phoneNumbers![label] = number;
           },
         );
       } else {
         phoneNumbers = null;
       }
 
-      String profileImage = map["profileImage"];
+      String? profileImage = map["profileImage"];
 
       mappedContacts.add(
         Contact(givenName, familyName, organization, emailAddresses,
@@ -70,24 +70,24 @@ class Addressbook {
 /// Entity representing one contact in an addressbook.
 class Contact {
   /// Given name alias forename.
-  final String givenName;
+  final String? givenName;
 
   /// Family name alias surname.
-  final String familyName;
+  final String? familyName;
 
   /// The organization this contact belongs to.
-  final String organization;
+  final String? organization;
 
   /// A collection of all the emailAddresses attached to this contact.
   /// The key represents the type of the emailAddress (work, home, etc.) and the value is the actually emailAddress.
-  final Map<String, String> emailAddresses;
+  final Map<String, String>? emailAddresses;
 
   /// A collection of all the phoneNumbers attached to this contact.
   /// The key represents the type of the phoneNumber (home, mobile, etc.) and the value is the actually phoneNumber as a [String].
-  final Map<String, String> phoneNumbers;
+  final Map<String, String>? phoneNumbers;
 
   /// Base64-encoded profile picture
-  final String profileImage;
+  final String? profileImage;
 
   Contact(this.givenName, this.familyName, this.organization,
       this.emailAddresses, this.phoneNumbers, this.profileImage);
