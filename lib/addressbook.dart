@@ -11,14 +11,14 @@ class Addressbook {
   /// Setting [onlyWithEmail] will filter out contacts without a single [Contacts#emailAddresses] entry.
   /// Profile image data can be included with the [profileImage] flag.
   static Future<List<Contact>> getContacts({
-    String query,
-    bool onlyWithEmail,
-    bool profileImage,
+    String? query,
+    bool? onlyWithEmail,
+    bool? profileImage,
   }) async {
     List<dynamic> contacts = await _channel.invokeMethod(
       'getContacts',
       {
-        "query": query,
+        if (query != null) "query": query,
         "onlyWithEmail": onlyWithEmail ?? false,
         "profileImage": profileImage ?? false
       },
@@ -32,11 +32,11 @@ class Addressbook {
       String organization = map["organization"];
 
       Map<dynamic, dynamic> emailAddressesMap = map["emailAddresses"];
-      Map<String, String> emailAddresses = Map<String, String>();
+      Map<String, String>? emailAddresses = Map<String, String>();
       if (emailAddressesMap != null) {
         emailAddressesMap.forEach(
           (label, email) {
-            emailAddresses[label] = email;
+            emailAddresses![label] = email;
           },
         );
       } else {
@@ -44,11 +44,11 @@ class Addressbook {
       }
 
       Map<dynamic, dynamic> phoneNumbersMap = map["phoneNumbers"];
-      Map<String, String> phoneNumbers = Map<String, String>();
+      Map<String, String>? phoneNumbers = Map<String, String>();
       if (phoneNumbersMap != null) {
         phoneNumbersMap.forEach(
           (label, number) {
-            phoneNumbers[label] = number;
+            phoneNumbers![label] = number;
           },
         );
       } else {
@@ -80,11 +80,11 @@ class Contact {
 
   /// A collection of all the emailAddresses attached to this contact.
   /// The key represents the type of the emailAddress (work, home, etc.) and the value is the actually emailAddress.
-  final Map<String, String> emailAddresses;
+  final Map<String, String>? emailAddresses;
 
   /// A collection of all the phoneNumbers attached to this contact.
   /// The key represents the type of the phoneNumber (home, mobile, etc.) and the value is the actually phoneNumber as a [String].
-  final Map<String, String> phoneNumbers;
+  final Map<String, String>? phoneNumbers;
 
   /// Base64-encoded profile picture
   final String profileImage;
