@@ -92,13 +92,12 @@ class AddressbookPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.Reque
         }
         return permissionGranted
     }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?): Boolean {
+    
+    override fun onRequestPermissionsResult(requestCode: Int,permissions: Array<out String>, grantResults: IntArray): Boolean {
         when (requestCode) {
             permissionCode -> {
-                if (null != grantResults &&
-                        grantResults.isNotEmpty() &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission granted
                     queryContacts()
                 } else {

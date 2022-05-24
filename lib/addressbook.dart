@@ -18,7 +18,7 @@ class Addressbook {
     List<dynamic> contacts = await _channel.invokeMethod(
       'getContacts',
       {
-        "query": query,
+        if (query != null) "query": query,
         "onlyWithEmail": onlyWithEmail ?? false,
         "profileImage": profileImage ?? false
       },
@@ -31,7 +31,7 @@ class Addressbook {
       String? familyName = map["familyName"];
       String? organization = map["organization"];
 
-      Map<dynamic, dynamic>? emailAddressesMap = map["emailAddresses"];
+      Map<dynamic, dynamic> emailAddressesMap = map["emailAddresses"];
       Map<String, String>? emailAddresses = Map<String, String>();
       if (emailAddressesMap != null) {
         emailAddressesMap.forEach(
@@ -43,7 +43,7 @@ class Addressbook {
         emailAddresses = null;
       }
 
-      Map<dynamic, dynamic>? phoneNumbersMap = map["phoneNumbers"];
+      Map<dynamic, dynamic> phoneNumbersMap = map["phoneNumbers"];
       Map<String, String>? phoneNumbers = Map<String, String>();
       if (phoneNumbersMap != null) {
         phoneNumbersMap.forEach(
