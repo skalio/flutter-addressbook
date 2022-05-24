@@ -1,6 +1,5 @@
 name: addressbook_example
 description: Demonstrates how to use the addressbook plugin.
-publish_to: 'none'
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

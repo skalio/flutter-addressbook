@@ -5,9 +5,11 @@ import android.app.Activity
 import android.content.ContentUris
 import android.content.Context
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
 import android.util.Base64
+import android.util.Log
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -90,7 +92,7 @@ class AddressbookPlugin : FlutterPlugin, MethodCallHandler, PluginRegistry.Reque
         }
         return permissionGranted
     }
-
+    
     override fun onRequestPermissionsResult(requestCode: Int,permissions: Array<out String>, grantResults: IntArray): Boolean {
         when (requestCode) {
             permissionCode -> {

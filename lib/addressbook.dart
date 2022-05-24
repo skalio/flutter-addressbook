@@ -27,9 +27,9 @@ class Addressbook {
     List<Contact> mappedContacts = [];
 
     for (var map in castedContacts) {
-      String givenName = map["givenName"];
-      String familyName = map["familyName"];
-      String organization = map["organization"];
+      String? givenName = map["givenName"];
+      String? familyName = map["familyName"];
+      String? organization = map["organization"];
 
       Map<dynamic, dynamic> emailAddressesMap = map["emailAddresses"];
       Map<String, String>? emailAddresses = Map<String, String>();
@@ -55,7 +55,7 @@ class Addressbook {
         phoneNumbers = null;
       }
 
-      String profileImage = map["profileImage"];
+      String? profileImage = map["profileImage"];
 
       mappedContacts.add(
         Contact(givenName, familyName, organization, emailAddresses,
@@ -70,13 +70,13 @@ class Addressbook {
 /// Entity representing one contact in an addressbook.
 class Contact {
   /// Given name alias forename.
-  final String givenName;
+  final String? givenName;
 
   /// Family name alias surname.
-  final String familyName;
+  final String? familyName;
 
   /// The organization this contact belongs to.
-  final String organization;
+  final String? organization;
 
   /// A collection of all the emailAddresses attached to this contact.
   /// The key represents the type of the emailAddress (work, home, etc.) and the value is the actually emailAddress.
@@ -87,7 +87,7 @@ class Contact {
   final Map<String, String>? phoneNumbers;
 
   /// Base64-encoded profile picture
-  final String profileImage;
+  final String? profileImage;
 
   Contact(this.givenName, this.familyName, this.organization,
       this.emailAddresses, this.phoneNumbers, this.profileImage);
