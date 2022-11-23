@@ -26,99 +26,108 @@ public class AddressbookPlugin: NSObject, FlutterPlugin {
     }
     
     fileprivate func getContacts(query: String?, onlyWithEmail: Bool?, profileImage: Bool?, result: @escaping FlutterResult) {
-        var contacts: NSArray = []
-        
-        if #available(OSX 10.11, *) {
+        if #available(macOS 10.11, *) {
+            var contacts: NSArray = []
             
-            guard (CNContactStore.authorizationStatus(for: .contacts) == .notDetermined || CNContactStore.authorizationStatus(for: .contacts) == .authorized) else {
-                result(nil)
-                return
-            }
-            
-            var keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactOrganizationNameKey, CNContactEmailAddressesKey, CNContactPhoneNumbersKey] as [CNKeyDescriptor]
-            let returnProfileImage = profileImage == nil ? true : profileImage!
-            
-            if (returnProfileImage) {
-                keysToFetch.append(contentsOf: [CNContactThumbnailImageDataKey] as [CNKeyDescriptor])
-            }
-            
-            let fetchRequest = CNContactFetchRequest(keysToFetch: keysToFetch)
-            DispatchQueue.global().sync {
-                let store = CNContactStore()
+            let store = CNContactStore()
+            store.requestAccess(for: .contacts) { isGranted, err in
+                if !isGranted || err != nil {
+                    result(nil)
+                    return
+                }
                 
-                // fetch all contacts
-                try? store.enumerateContacts(with: fetchRequest, usingBlock: { (contact, stop) in
+                guard (CNContactStore.authorizationStatus(for: .contacts) == .notDetermined || CNContactStore.authorizationStatus(for: .contacts) == .authorized) else {
+                    result(nil)
+                    return
+                }
+                
+                var keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactOrganizationNameKey, CNContactEmailAddressesKey, CNContactPhoneNumbersKey] as [CNKeyDescriptor]
+                let returnProfileImage = profileImage == nil ? true : profileImage!
+                
+                if (returnProfileImage) {
+                    keysToFetch.append(contentsOf: [CNContactThumbnailImageDataKey] as [CNKeyDescriptor])
+                }
+                
+                let fetchRequest = CNContactFetchRequest(keysToFetch: keysToFetch)
+                DispatchQueue.global().sync {
                     
-                    // fetch just contacts which contains query
-                    if let query = query {
-                        let matched = self.filter(query: query, contact: contact)
-                        if (!matched) {
-                            return
-                        }
-                    }
-                    
-                    if let onlyWithEmail = onlyWithEmail {
-                        if (onlyWithEmail) {
-                            if (contact.emailAddresses.isEmpty) {
+                    // fetch all contacts
+                    try? store.enumerateContacts(with: fetchRequest, usingBlock: { (contact, stop) in
+                        
+                        // fetch just contacts which contains query
+                        if let query = query {
+                            let matched = self.filter(query: query, contact: contact)
+                            if (!matched) {
                                 return
                             }
                         }
-                    }
-                    
-                    var emailAddresses = [String?: String]()
-                    for email in contact.emailAddresses {
-                        var type = "";
-                        if let label = email.label {
-                            type = CNLabeledValue<NSString>.localizedString(forLabel: label)
+                        
+                        if let onlyWithEmail = onlyWithEmail {
+                            if (onlyWithEmail) {
+                                if (contact.emailAddresses.isEmpty) {
+                                    return
+                                }
+                            }
                         }
-                        var key = type
-                        var counter = 0
-                        while (emailAddresses[key] != nil) {
-                            key = type + "_" + String(counter)
-                            counter += 1
+                        
+                        var emailAddresses = [String?: String]()
+                        for email in contact.emailAddresses {
+                            var type = "";
+                            if let label = email.label {
+                                type = CNLabeledValue<NSString>.localizedString(forLabel: label)
+                            }
+                            var key = type
+                            var counter = 0
+                            while (emailAddresses[key] != nil) {
+                                key = type + "_" + String(counter)
+                                counter += 1
+                            }
+                            emailAddresses[key] = String(email.value)
                         }
-                        emailAddresses[key] = String(email.value)
-                    }
-                    
-                    var prePhoneNumbers = [String?: String]()
-                    for number in contact.phoneNumbers {
-                        var type = "";
-                        if let label = number.label {
-                            type = CNLabeledValue<NSString>.localizedString(forLabel: label)
+                        
+                        var prePhoneNumbers = [String?: String]()
+                        for number in contact.phoneNumbers {
+                            var type = "";
+                            if let label = number.label {
+                                type = CNLabeledValue<NSString>.localizedString(forLabel: label)
+                            }
+                            var key = type
+                            var counter = 0
+                            while (prePhoneNumbers[key] != nil) {
+                                key = type + "_" + String(counter)
+                                counter += 1
+                            }
+                            prePhoneNumbers[key] = number.value.stringValue
                         }
-                        var key = type
-                        var counter = 0
-                        while (prePhoneNumbers[key] != nil) {
-                            key = type + "_" + String(counter)
-                            counter += 1
+                        
+                        
+                        var imageDataBase64: String?
+                        if (returnProfileImage) {
+                            if let refetchedContact = try? store.unifiedContact(withIdentifier: contact.identifier, keysToFetch: keysToFetch) {
+                                imageDataBase64 = refetchedContact.thumbnailImageData?.base64EncodedString()
+                            }
                         }
-                        prePhoneNumbers[key] = number.value.stringValue
-                    }
-                    
-                    
-                    var imageDataBase64: String?
-                    if (returnProfileImage) {
-                        if let refetchedContact = try? store.unifiedContact(withIdentifier: contact.identifier, keysToFetch: keysToFetch) {
-                            imageDataBase64 = refetchedContact.thumbnailImageData?.base64EncodedString()
-                        }
-                    }
-                    
-                    let givenName: String? = contact.givenName.isEmpty ? nil : contact.givenName
-                    let familyName: String? = contact.familyName.isEmpty ? nil : contact.familyName
-                    let organization: String? = contact.organizationName.isEmpty ? nil : contact.organizationName
-                    let phoneNumbers: [String?: String]? = prePhoneNumbers.isEmpty ? nil : prePhoneNumbers
-                    
-                    let contactMap: NSDictionary = ["givenName": givenName as Any, "familyName": familyName as Any, "organization": organization as Any, "emailAddresses": emailAddresses as Any, "phoneNumbers": phoneNumbers as Any, "profileImage": imageDataBase64 as Any]
-                    
-                    contacts = contacts.adding(contactMap) as NSArray
-                })
+                        
+                        let givenName: String? = contact.givenName.isEmpty ? nil : contact.givenName
+                        let familyName: String? = contact.familyName.isEmpty ? nil : contact.familyName
+                        let organization: String? = contact.organizationName.isEmpty ? nil : contact.organizationName
+                        let phoneNumbers: [String?: String]? = prePhoneNumbers.isEmpty ? nil : prePhoneNumbers
+                        
+                        let contactMap: NSDictionary = ["givenName": givenName as Any, "familyName": familyName as Any, "organization": organization as Any, "emailAddresses": emailAddresses as Any, "phoneNumbers": phoneNumbers as Any, "profileImage": imageDataBase64 as Any]
+                        
+                        contacts = contacts.adding(contactMap) as NSArray
+                    })
+                }
+                
+                result(contacts)
             }
+        } else {
+            result(nil)
         }
-        result(contacts)
     }
     
     // filter in fullname, organizationname and email with query
-    @available(OSX 10.11, *)
+    @available(macOS 10.11, *)
     fileprivate func filter(query: String, contact: CNContact) -> Bool {
         let query = query.lowercased()
         let fullname = (contact.givenName + " " + contact.familyName).lowercased()

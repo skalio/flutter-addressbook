@@ -23,6 +23,11 @@ class Addressbook {
         "profileImage": profileImage ?? false
       },
     );
+
+    if (contacts == null) {
+      return [];
+    }
+
     List<Map<dynamic, dynamic>> castedContacts = contacts.cast();
     List<Contact> mappedContacts = [];
 
