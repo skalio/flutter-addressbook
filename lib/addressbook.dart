@@ -15,7 +15,7 @@ class Addressbook {
     bool? onlyWithEmail,
     bool? profileImage,
   }) async {
-    List<dynamic> contacts = await _channel.invokeMethod(
+    List<dynamic>? contacts = await _channel.invokeMethod(
       'getContacts',
       {
         if (query != null) "query": query,
@@ -36,7 +36,7 @@ class Addressbook {
       String? familyName = map["familyName"];
       String? organization = map["organization"];
 
-      Map<dynamic, dynamic> emailAddressesMap = map["emailAddresses"];
+      Map<dynamic, dynamic>? emailAddressesMap = map["emailAddresses"];
       Map<String, String>? emailAddresses = Map<String, String>();
       if (emailAddressesMap != null) {
         emailAddressesMap.forEach(
@@ -48,7 +48,7 @@ class Addressbook {
         emailAddresses = null;
       }
 
-      Map<dynamic, dynamic> phoneNumbersMap = map["phoneNumbers"];
+      Map<dynamic, dynamic>? phoneNumbersMap = map["phoneNumbers"];
       Map<String, String>? phoneNumbers = Map<String, String>();
       if (phoneNumbersMap != null) {
         phoneNumbersMap.forEach(
@@ -63,8 +63,7 @@ class Addressbook {
       String? profileImage = map["profileImage"];
 
       mappedContacts.add(
-        Contact(givenName, familyName, organization, emailAddresses,
-            phoneNumbers, profileImage),
+        Contact(givenName, familyName, organization, emailAddresses, phoneNumbers, profileImage),
       );
     }
 
@@ -94,6 +93,6 @@ class Contact {
   /// Base64-encoded profile picture
   final String? profileImage;
 
-  Contact(this.givenName, this.familyName, this.organization,
-      this.emailAddresses, this.phoneNumbers, this.profileImage);
+  Contact(
+      this.givenName, this.familyName, this.organization, this.emailAddresses, this.phoneNumbers, this.profileImage);
 }

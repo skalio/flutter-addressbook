@@ -53,7 +53,6 @@ public class AddressbookPlugin: NSObject, FlutterPlugin {
                     
                     // fetch all contacts
                     try? store.enumerateContacts(with: fetchRequest, usingBlock: { (contact, stop) in
-                        
                         // fetch just contacts which contains query
                         if let query = query {
                             let matched = self.filter(query: query, contact: contact)
@@ -70,7 +69,7 @@ public class AddressbookPlugin: NSObject, FlutterPlugin {
                             }
                         }
                         
-                        var emailAddresses = [String?: String]()
+                        var preEmailAddresses = [String?: String]()
                         for email in contact.emailAddresses {
                             var type = "";
                             if let label = email.label {
@@ -78,11 +77,11 @@ public class AddressbookPlugin: NSObject, FlutterPlugin {
                             }
                             var key = type
                             var counter = 0
-                            while (emailAddresses[key] != nil) {
+                            while (preEmailAddresses[key] != nil) {
                                 key = type + "_" + String(counter)
                                 counter += 1
                             }
-                            emailAddresses[key] = String(email.value)
+                            preEmailAddresses[key] = String(email.value)
                         }
                         
                         var prePhoneNumbers = [String?: String]()
@@ -111,6 +110,7 @@ public class AddressbookPlugin: NSObject, FlutterPlugin {
                         let givenName: String? = contact.givenName.isEmpty ? nil : contact.givenName
                         let familyName: String? = contact.familyName.isEmpty ? nil : contact.familyName
                         let organization: String? = contact.organizationName.isEmpty ? nil : contact.organizationName
+                        let emailAddresses: [String?: String]? = preEmailAddresses.isEmpty ? nil : preEmailAddresses
                         let phoneNumbers: [String?: String]? = prePhoneNumbers.isEmpty ? nil : prePhoneNumbers
                         
                         let contactMap: NSDictionary = ["givenName": givenName as Any, "familyName": familyName as Any, "organization": organization as Any, "emailAddresses": emailAddresses as Any, "phoneNumbers": phoneNumbers as Any, "profileImage": imageDataBase64 as Any]
