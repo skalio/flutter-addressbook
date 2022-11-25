@@ -4,11 +4,11 @@ A Flutter plugin to access the device's address book.
 ## Features
 * Automatically ask user for permission
 * Get all contacts or querying for certain contacts
-* [WIP] Android
 
 ## Requirements
 * iOS 9.0+
 * MacOS 10.11+
+* Android 5.0+
 
 ## Installation
 Add following lines to your `pubspec.yaml
@@ -40,6 +40,3 @@ On iOS or MacOS you'll need to add the NSContactsUsageDescription to your Info.p
 <key>NSContactsUsageDescription</key>
 <string>This app needs access to address book</string>
 ```
-
-#### Android
-Coming soon..
