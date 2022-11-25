@@ -8,7 +8,7 @@ A Flutter plugin to access the device's address book.
 ## Requirements
 * iOS 9.0+
 * MacOS 10.11+
-* Android 4.0+
+* Android 5.0+
 
 ## Installation
 Add following lines to your `pubspec.yaml
