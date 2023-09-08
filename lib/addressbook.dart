@@ -94,5 +94,11 @@ class Contact {
   final String? profileImage;
 
   Contact(
-      this.givenName, this.familyName, this.organization, this.emailAddresses, this.phoneNumbers, this.profileImage);
+    this.givenName,
+    this.familyName,
+    this.organization,
+    this.emailAddresses,
+    this.phoneNumbers,
+    this.profileImage,
+  );
 }
