@@ -50,7 +50,7 @@ public class SwiftAddressbookPlugin: NSObject, FlutterPlugin {
                 }
                 
                 let fetchRequest = CNContactFetchRequest(keysToFetch: keysToFetch)
-                DispatchQueue.global().sync {
+                DispatchQueue.global().async {
                     
                     // fetch all contacts
                     try? store.enumerateContacts(with: fetchRequest, usingBlock: { (contact, stop) in
@@ -118,9 +118,11 @@ public class SwiftAddressbookPlugin: NSObject, FlutterPlugin {
                         
                         contacts = contacts.adding(contactMap) as NSArray
                     })
+
+                    DispatchQueue.main.async {
+                        result(contacts)
+                    }
                 }
-                
-                result(contacts)
             }
         } else {
             result(nil)
