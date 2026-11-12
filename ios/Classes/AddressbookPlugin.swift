@@ -2,7 +2,7 @@ import Flutter
 import UIKit
 import Contacts
 
-public class SwiftAddressbookPlugin: NSObject, FlutterPlugin {
+public class AddressbookPlugin: NSObject, FlutterPlugin {
     
     // Constants - Method Names
     fileprivate let GETCONTACTS_METHOD = "getContacts"
@@ -10,7 +10,7 @@ public class SwiftAddressbookPlugin: NSObject, FlutterPlugin {
     // Functions
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "addressbook", binaryMessenger: registrar.messenger())
-        let instance = SwiftAddressbookPlugin()
+        let instance = AddressbookPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     
