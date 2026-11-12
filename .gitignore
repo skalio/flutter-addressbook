@@ -6,6 +6,10 @@
 
 build/
 
+# Swift Package Manager related
+.build/
+.swiftpm/
+
 .idea
 *.packages
 example/pubspec.lock
